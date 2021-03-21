@@ -2,6 +2,8 @@ from splinter import Browser
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
+from flask import Flask, render_template
+
 
 executable_path = {'executable_path': ChromeDriverManager().install()}
 
@@ -19,7 +21,9 @@ def scrape():
     }
     return mars
 
-
+app = Flask(__name__) 
+@app.route('/scrape')
+    return render_template (index.html)
 
 
 
