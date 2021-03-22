@@ -3,18 +3,23 @@ from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 from flask import Flask
-import pymongo
+from pymongo import MongoClient
+from flask_pymongo import PyMongo
 
 
 
 executable_path = {'executable_path': ChromeDriverManager().install()}
 #create an instance for Flask App
-#app = Flask(__name__) 
+app = Flask(__name__) 
 
 #connect 
-#conn='mongodb://localhost:27017'
-#client=pymongo.Mongoclient(conn)
+conn='mongodb://localhost:27017'
+client=pymongo.Mongoclient(conn)
 
+mongo=PyMongo(app)
+db=mongo.db
+col=mongo.db["mars"]
+print(MongoDB db)
 
 
 @app.route('/scrape')
@@ -25,7 +30,7 @@ def scrape():
     mars={
         "title":Title,
         "paragraph": Paragraph,
-        'image': image(browser),
+        'image': featured_image_url,
         'facts': facts(),
         'hemispheres': hemispheres(browser) 
     }
