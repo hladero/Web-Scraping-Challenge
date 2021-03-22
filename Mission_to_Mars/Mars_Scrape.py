@@ -2,28 +2,39 @@ from splinter import Browser
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
-from flask import Flask, render_template
+from flask import Flask
+import pymongo
+
 
 
 executable_path = {'executable_path': ChromeDriverManager().install()}
+#create an instance for Flask App
+#app = Flask(__name__) 
+
+#connect 
+#conn='mongodb://localhost:27017'
+#client=pymongo.Mongoclient(conn)
 
 
+
+@app.route('/scrape')
 def scrape():
     browser = Browser ('chrome', **executable_path, headless = False)
     title,paragraph = news(browser)
 
     mars={
-        "title":title,
-        "paragraph": paragraph,
+        "title":Title,
+        "paragraph": Paragraph,
         'image': image(browser),
         'facts': facts(),
         'hemispheres': hemispheres(browser) 
     }
     return mars
 
-app = Flask(__name__) 
-@app.route('/scrape')
-    return render_template (index.html)
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 
 
 
@@ -141,7 +152,7 @@ featured_image_url
 
 ### Mars Facts
 # Visit the Mars Facts webpage [here](https://space-facts.com/mars/) and use Pandas to scrape the table containing facts about the planet including Diameter, Mass, etc.
-pd.read_html('https://space-facts.com/mars/')[0].to_html()
+facts = pd.read_html('https://space-facts.com/mars/')[0].to_html()
 
 
 
