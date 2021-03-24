@@ -8,14 +8,14 @@ from flask import Flask
 def scrape():
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser ('chrome', **executable_path, headless = False)
-    title,paragraph = news()
+    title,paragraph = news(browser)
 
     mars={
-        "title":Title (),
-        "paragraph": Paragraph (),
-        'image': featured_image_url (),
+        "title":title,
+        "paragraph": paragraph,
+        'image': featured_image_url(browser),
         'facts': facts(),
-        'hemispheres': hemispheres() 
+        'hemispheres': hemispheres(browser) 
     }
     return mars
 
@@ -36,12 +36,8 @@ def featured_image_url(browser):
     browser.find_by_css('img.fancybox-image')['src']
     return featured_image_url
 
-def facts(browser):
-    url = 'https://space-facts.com/mars/'
-    browser.visit(url)
-    facts = pd.read_html('https://space-facts.com/mars/')[0].to_html()
-    return facts
-
+def facts():
+    return pd.read_html('https://space-facts.com/mars/')[0].to_html()
 
 def hemispheres(browser):
     url='https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
